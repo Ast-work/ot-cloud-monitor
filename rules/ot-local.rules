@@ -1,0 +1,2 @@
+alert modbus any any -> any any (msg:"OT MONITOR - Modbus write request observed"; modbus: access write; sid:1001001; rev:1;)
+alert modbus any any -> any any (msg:"OT MONITOR - Modbus Write Multiple Coils (FC15) detected"; modbus: function 15; sid:1001002; rev:1;)

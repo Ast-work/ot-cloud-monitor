@@ -1,0 +1,16 @@
+# Generated Suricata logs
+logs/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Temporary files
+*.tmp
+*.swp
+
+# Environment and secrets
+.env
+*.tfstate
+*.tfstate.*
+.terraform/
