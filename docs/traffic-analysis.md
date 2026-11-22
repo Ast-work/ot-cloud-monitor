@@ -21,3 +21,24 @@ The FC15-specific rule successfully detected the observed Modbus write activity.
 
 ### Limitation
 The detection identifies protocol activity, not malicious intent. Authorisation and operational context must be validated separately.
+
+## Phase 2 – Scenario 1: OT Communication Baseline
+
+### Objective
+Identify Modbus communication participants and establish a baseline for detecting unexpected hosts.
+
+### Observations
+- Central communication participant: 141.81.0.10
+- Additional communicating endpoints: 13
+- Total observed Modbus source IPs: 14
+- All 13 endpoints communicated with 141.81.0.10.
+- All 13 endpoints also appeared as Modbus traffic sources.
+
+### Assessment
+The capture contains 14 known Modbus participants. No additional or unidentified Modbus source host was observed.
+
+### Conclusion
+No unexpected Modbus source was identified in this sample PCAP. This establishes an initial capture-specific communication baseline.
+
+### Limitations
+This finding applies only to the supplied PCAP. It does not establish that these hosts are authorised in a real OT environment. Asset inventory and network-owner validation would be required.
