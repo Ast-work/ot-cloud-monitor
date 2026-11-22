@@ -86,3 +86,35 @@ No malicious activity or physical process impact is confirmed.
 
 **Status:** Baseline observation documented. Malicious intent not established.
 **Status:** Baseline observation documented. Malicious intent not established.
+
+## Phase 2 – Scenario 3: Abnormal OT Communication Baseline
+
+### Objective
+Establish normal Modbus traffic volume and identify unusual communication bursts.
+
+### Traffic volume analysis
+- Capture analysed in one-second intervals.
+- Observed intervals: 85.
+- Average traffic: approximately 140 packets per second.
+- Median traffic: 140 packets per second.
+- Standard deviation: approximately 27.9 packets.
+- Maximum: 211 packets in second 6.
+- Minimum: 86 packets in second 7.
+
+### Peak investigation
+The peak at second 6 was investigated by examining source and destination pairs.
+
+- All observed traffic involved the central participant `141.81.0.10` and the 13 previously identified endpoints.
+- All 13 endpoint pairs communicated in both directions.
+- No additional Modbus participant was identified.
+- The busiest pair was `.10` and `.64`, accounting for 27 packets.
+
+### Assessment
+The observed peak was distributed across known communication pairs. No single unexpected host was responsible for the increase.
+
+The available evidence does not establish malicious activity or an abnormal operational condition. The measured values represent this sample PCAP only and should not be treated as universal OT traffic thresholds.
+
+### Conclusion
+A preliminary Modbus traffic-volume baseline has been established. No confirmed abnormal traffic burst was identified from this analysis.
+
+**Status:** Baseline documented; no threshold-based detection rule justified by current evidence.
