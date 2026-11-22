@@ -42,3 +42,47 @@ No unexpected Modbus source was identified in this sample PCAP. This establishes
 
 ### Limitations
 This finding applies only to the supplied PCAP. It does not establish that these hosts are authorised in a real OT environment. Asset inventory and network-owner validation would be required.
+
+## Phase 2 – Scenario 2: Modbus Write Activity Analysis
+
+### Objective
+Identify Modbus write operations and determine whether any destinations show distinct write activity that requires further investigation.
+
+### Observations
+
+The PCAP analysis identified the following write activity from `141.81.0.10`:
+
+- FC15 (Write Multiple Coils) traffic was observed to all 13 Modbus endpoints.
+- The highest observed FC15 counts were to `141.81.0.163` (280) and `141.81.0.143` (279).
+- FC16 (Write Multiple Registers) traffic was observed only to:
+  - `141.81.0.46` – 9 observed instances.
+  - `141.81.0.44` – 5 observed instances.
+
+### FC16 Investigation
+
+The inspected FC16 frames included:
+
+| Frame | Relative time (seconds) | Destination | Observed starting addresses |
+|---|---:|---|---|
+| 6023 | 33.173570 | 141.81.0.44 | 2100 |
+| 6026 | 33.174143 | 141.81.0.44 | 2102, 2200, 100, 116 |
+| 6414 | 35.142660 | 141.81.0.46 | 19 |
+| 6421 | 35.159896 | 141.81.0.46 | 9, 1, 69, 59, 99, 89 |
+| 6463 | 35.259674 | 141.81.0.46 | 49, 53, 7, 1 |
+
+### Assessment
+
+FC16 activity is limited to two destinations in this capture, while FC15 activity is distributed across all 13 endpoints.
+
+The register-write activity is worth recording as a distinct communication pattern. However, the available PCAP does not include an authoritative register map, asset inventory, or operational context to establish whether these writes are authorised or abnormal.
+
+No malicious activity or physical process impact is confirmed.
+
+### Conclusion
+
+- FC15 write activity is part of the observed communication pattern across all 13 endpoints.
+- FC16 writes were observed only to `141.81.0.44` and `141.81.0.46`.
+- Further operational validation would be required before classifying these writes as suspicious or unauthorised.
+
+**Status:** Baseline observation documented. Malicious intent not established.
+**Status:** Baseline observation documented. Malicious intent not established.
