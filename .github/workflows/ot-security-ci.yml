@@ -6,30 +6,53 @@ on:
     branches: [master, main]
     paths:
       - 'rules/**'
+      - 'pcaps/**'
       - '.github/workflows/**'
   pull_request:
     branches: [master, main]
     paths:
       - 'rules/**'
+      - 'pcaps/**'
       - '.github/workflows/**'
 
 jobs:
   validate-suricata-rules:
-    name: Validate Suricata Rules
+    name: Validate and Test OT Detections
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Suricata
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y suricata
+          sudo apt-get install -y suricata jq
 
-      - name: Validate custom Modbus rules
+      - name: Validate Suricata rules
         run: |
           sudo suricata -T \
             -c /etc/suricata/suricata.yaml \
             --set app-layer.protocols.modbus.enabled=yes \
             -S rules/ot-local.rules
+
+      - name: Replay OT sample PCAP
+        run: |
+          mkdir -p logs/ci-test
+          sudo suricata -r pcaps/sample.pcap \
+            -c /etc/suricata/suricata.yaml \
+            --set app-layer.protocols.modbus.enabled=yes \
+            -S rules/ot-local.rules \
+            -l logs/ci-test
+
+      - name: Verify expected detection alerts
+        run: |
+          sudo jq -e '
+            select(.event_type == "alert" and .alert.signature_id == 1001001)
+          ' logs/ci-test/eve.json > /dev/null
+
+          sudo jq -e '
+            select(.event_type == "alert" and .alert.signature_id == 1001002)
+          ' logs/ci-test/eve.json > /dev/null
+
+          echo "PASS: Both expected Modbus detections generated alerts."
