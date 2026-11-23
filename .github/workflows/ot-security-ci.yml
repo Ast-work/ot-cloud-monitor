@@ -8,12 +8,14 @@ on:
       - 'rules/**'
       - 'pcaps/**'
       - '.github/workflows/**'
+      - 'terraform/**'
   pull_request:
     branches: [master, main]
     paths:
       - 'rules/**'
       - 'pcaps/**'
       - '.github/workflows/**'
+      - 'terraform/**'
 
 jobs:
   validate-suricata-rules:
@@ -56,3 +58,24 @@ jobs:
           ' logs/ci-test/eve.json > /dev/null
 
           echo "PASS: Both expected Modbus detections generated alerts."
+  checkov-terraform-scan:
+    name: Checkov Terraform Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Checkov
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install checkov
+
+      - name: Scan Terraform configuration
+        run: |
+          checkov -d terraform --framework terraform --soft-fail
