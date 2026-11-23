@@ -14,3 +14,9 @@ __pycache__/
 *.tfstate
 *.tfstate.*
 .terraform/
+
+# Terraform local variables
+terraform/terraform.tfvars
+
+# Floci local emulator data
+floci/data/
