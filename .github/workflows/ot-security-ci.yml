@@ -1,0 +1,33 @@
+name: OT Security Rule Validation
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'rules/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'rules/**'
+      - '.github/workflows/**'
+
+jobs:
+  validate-suricata-rules:
+    name: Validate Suricata Rules
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Suricata
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y suricata
+
+      - name: Validate custom rules
+        run: |
+          sudo suricata -T \
+            -c /etc/suricata/suricata.yaml \
+            -S rules/ot-local.rules
