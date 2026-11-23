@@ -1,3 +1,4 @@
+
 name: OT Security Rule Validation
 
 on:
@@ -26,8 +27,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y suricata
 
-      - name: Validate custom rules
+      - name: Validate custom Modbus rules
         run: |
           sudo suricata -T \
             -c /etc/suricata/suricata.yaml \
+            --set app-layer.protocols.modbus.enabled=yes \
             -S rules/ot-local.rules
